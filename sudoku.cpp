@@ -46,9 +46,17 @@
 using std::cout;
 using std::endl;
 
-struct Cell {
+class Cell {
   int assigned_; // the digit 1-9 assigned to this cell or 0 if unassigned
   unsigned assignable_; // bits 1-9 indicating which digit could be assigned
+public:
+  void assign(int dig) {
+    assert(dig >= 1 && dig <= 9);
+    assigned_ = dig;
+  }
+  int assigned() const {
+    return assigned_;
+  }
   bool assignable() const {
     return assignable_;
   }
@@ -74,9 +82,12 @@ struct Cell {
   {}
 };
 
-struct Board {
+class Board {
+public:
   static constexpr int num_cells = 9 * 9;
+private:
   Cell cells[num_cells];
+public:
   void find(int pos) const;
   Cell& cell(int pos) {
     assert(pos >= 0 && pos < num_cells);
@@ -107,7 +118,7 @@ void Board::find(int pos) const
       print();
       return;
     }
-    if (cell(pos).assigned_ == 0)
+    if (!cell(pos).assigned())
       break;
     ++pos;
   }
@@ -128,8 +139,8 @@ void Board::print() const
   for (int r = 0; r < 9; ++r) {
     for (int c = 0; c < 9; ++c) {
       auto& x = cell(r, c);
-      if (x.assigned_)
-        cout << x.assigned_;
+      if (x.assigned())
+        cout << x.assigned();
       else
         cout << '_';
       if (c == 2 || c == 5)
@@ -146,7 +157,7 @@ void Board::assign(int pos, int dig)
   assert(dig >= 1 && dig <= 9);
   int row = pos / 9;
   int col = pos % 9;
-  cell(pos).assigned_ = dig;
+  cell(pos).assign(dig);
   for (int r = 0; r < 9; ++r)
     cell(r, col).cant_assign(dig);
   for (int c = 0; c < 9; ++c)
