@@ -36,6 +36,7 @@
   opt="-O0 -g      "; g++ -Wall -Werror -std=c++11 $opt sudoku.cpp && ./a.out <sudoku1.txt
   opt="-O3 -DNDEBUG"; g++ -Wall -Werror -std=c++11 $opt sudoku.cpp && ./a.out <sudoku1.txt
 
+  Copyright (c) 2016, Michael Cook <michael@waxrat.com>. All rights reserved.
 */
 
 #include <iostream>
